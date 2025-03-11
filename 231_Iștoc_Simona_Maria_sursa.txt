@@ -1,0 +1,900 @@
+--------------------------------------------4+5
+CREATE SEQUENCE increment_productie
+START WITH 1
+INCREMENT BY 1
+MINVALUE 0
+MAXVALUE 1000
+NOCYCLE;
+
+CREATE SEQUENCE increment_actor
+START WITH 1
+INCREMENT BY 1
+MINVALUE 0
+MAXVALUE 1000
+NOCYCLE;
+
+CREATE TABLE PLATA(
+    plata_id NUMBER(6) PRIMARY KEY,
+    detinator VARCHAR2(50) NOT NULL,
+    cod NUMBER(16) NOT NULL UNIQUE,
+    data_expirare DATE NOT NULL,
+    CVV NUMBER(3) NOT NULL
+);
+INSERT INTO PLATA VALUES(1, 'JOHN SMITH', 1234567890123456, to_date('15.1.2024','dd.mm.yyyy'), 123);
+INSERT INTO PLATA VALUES(2, 'ALICE JOHNSON', 2345678901234567, to_date('10.10.2025','dd.mm.yyyy'), 173);
+INSERT INTO PLATA VALUES(3, 'MICHAEL BROWN', 3456789012345678, to_date('20.12.2024','dd.mm.yyyy'), 333);
+INSERT INTO PLATA VALUES(4, 'EMILY DAVIS', 4567890123456789, to_date('14.7.2025','dd.mm.yyyy'), 909);
+INSERT INTO PLATA VALUES(5, 'DAVID WILSON', 4254753564907767, to_date('5.3.2025','dd.mm.yyyy'), 472);
+INSERT INTO PLATA VALUES(6, 'SALAH LEE', 7345113144437373, to_date('30.8.2024','dd.mm.yyyy'), 649);
+
+select * from plata;
+
+
+CREATE TABLE ABONAMENT(
+    abonament_id NUMBER(6) PRIMARY KEY,
+    tip_plata VARCHAR(10) NOT NULL,
+    data_expirare_plata DATE NOT NULL
+);
+INSERT INTO ABONAMENT VALUES(10, 'lunar', to_date('13.2.2024', 'dd.mm.yyyy'));
+INSERT INTO ABONAMENT VALUES(20, 'lunar', to_date('17.6.2024', 'dd.mm.yyyy'));
+INSERT INTO ABONAMENT VALUES(30, 'anual', to_date('25.12.2025', 'dd.mm.yyyy'));
+INSERT INTO ABONAMENT VALUES(40, 'anual', to_date('13.1.2025', 'dd.mm.yyyy'));
+INSERT INTO ABONAMENT VALUES(50, 'lunar', to_date('25.6.2025', 'dd.mm.yyyy'));
+INSERT INTO ABONAMENT VALUES(60, 'anual', to_date('13.2.2025', 'dd.mm.yyyy'));
+select * from abonament;
+
+
+CREATE TABLE PROFIL(
+    profil_id NUMBER(6) PRIMARY KEY,
+    abonament_id NUMBER(6) NOT NULL,
+    porecla VARCHAR2(20) NOT NULL,
+    data_creare DATE NOT NULL,
+    FOREIGN KEY (abonament_id) REFERENCES ABONAMENT(abonament_id)
+);
+INSERT INTO PROFIL VALUES(11, 10, 'Spark', to_date('13.1.2023', 'dd.mm.yyyy'));
+INSERT INTO PROFIL VALUES(22, 10, 'Luna', to_date('14.2.2024', 'dd.mm.yyyy'));
+INSERT INTO PROFIL VALUES(33, 20, 'Rocket', to_date('16.1.2022', 'dd.mm.yyyy'));
+INSERT INTO PROFIL VALUES(44, 30, 'Maverick', to_date('5.2.2024', 'dd.mm.yyyy'));
+INSERT INTO PROFIL VALUES(55, 40, 'Raven', to_date('14.1.2023', 'dd.mm.yyyy'));
+INSERT INTO PROFIL VALUES(66, 60, 'Scout', to_date('4.1.2024', 'dd.mm.yyyy'));
+INSERT INTO PROFIL VALUES(77, 50, 'Scout', to_date('4.1.2024', 'dd.mm.yyyy'));
+INSERT INTO PROFIL VALUES(100, 10, 'Test', to_date('18.11.2024', 'dd.mm.yyyy'));
+
+select * from profil;
+
+
+CREATE TABLE UTILIZATOR(
+    utilizator_id NUMBER(6) PRIMARY KEY,
+    abonament_id NUMBER(6) NOT NULL,
+    plata_id NUMBER(6) NOT NULL,
+    mail VARCHAR2(50) NOT NULL UNIQUE,
+    parola VARCHAR(50) NOT NULL,
+    data_creare DATE NOT NULL,
+    telefon VARCHAR2(16),
+    FOREIGN KEY (abonament_id) REFERENCES ABONAMENT(abonament_id),
+    FOREIGN KEY (plata_id) REFERENCES PLATA(plata_id)
+);
+INSERT INTO UTILIZATOR VALUES(100, 10, 1, 'johnsmith@yahoo.com', 'josmith123', to_date('13.01.2023', 'dd.mm.yyyy'), '0762599250');
+INSERT INTO UTILIZATOR VALUES(101, 20, 2, 'aljohnson@gmail.com', 'johnsonAls', to_date('16.01.2024', 'dd.mm.yyyy'), '0742911211');
+INSERT INTO UTILIZATOR VALUES(102, 30, 3, 'brownMICH@gmail.com', 'safePassword', to_date('5.02.2024', 'dd.mm.yyyy'), '0798566123');
+INSERT INTO UTILIZATOR VALUES(103, 40, 4, 'DaViSeml@yahoo.com', 'EmilY', to_date('14.01.2023', 'dd.mm.yyyy'), '0776544232');
+INSERT INTO UTILIZATOR VALUES(104, 50, 5, 'willdavidson@gmail.com', 'q34trs67', to_date('4.01.2024', 'dd.mm.yyyy'), '0768777565');
+INSERT INTO UTILIZATOR(utilizator_id, abonament_id, plata_id, mail, parola, data_creare)
+    VALUES(105, 60, 6, 'LeeSrh@gmail.com', 'llovve56', to_date('4.01.2024', 'dd.mm.yyyy'));
+
+select * from utilizator;
+
+
+CREATE TABLE DIRECTOR(
+    director_id NUMBER(5) PRIMARY KEY,
+    nume VARCHAR2(50),
+    prenume VARCHAR2(50),
+    data_nastere DATE
+);
+INSERT INTO DIRECTOR VALUES(101, 'Hart', 'Hanson', to_date('26.7.1957', 'dd.mm.yyyy'));
+INSERT INTO DIRECTOR VALUES(202, 'Steven', 'Knight', to_date('1.4.1959', 'dd.mm.yyyy'));
+INSERT INTO DIRECTOR (director_id, nume, prenume) VALUES(303, 'Adam', 'Horowitz');
+INSERT INTO DIRECTOR (director_id, nume, prenume) VALUES(404, 'Paul', 'Scheuring');
+INSERT INTO DIRECTOR VALUES(505, 'Dana', 'Terrace', to_date('8.12.1990', 'dd.mm.yyyy'));
+INSERT INTO DIRECTOR VALUES(606, 'Kenneth', 'Branagh', to_date('10.12.1960', 'dd.mm.yyyy'));
+INSERT INTO DIRECTOR (director_id, nume, prenume) VALUES(707, 'Mark', 'Mylod');
+INSERT INTO DIRECTOR (director_id, nume, prenume) VALUES(808, 'Yargos ', 'Lanthimos');
+INSERT INTO DIRECTOR (director_id, nume, prenume) VALUES(909, 'Edward', 'Kitsis');
+
+select * from director;
+
+
+CREATE TABLE ACTOR(
+    actor_id NUMBER(5) PRIMARY KEY,
+    nume VARCHAR2(50) NOT NULL,
+    prenume VARCHAR2(50) NOT NULL,
+    data_natere DATE
+);
+INSERT INTO ACTOR VALUES(increment_actor.nextval, 'Cillian', 'Murphy', to_date('25.5.1976', 'dd.mm.yyyy'));
+INSERT INTO ACTOR VALUES(increment_actor.nextval, 'David', 'Boreanaz', to_date('16.5.1969', 'dd.mm.yyyy'));
+INSERT INTO ACTOR VALUES(increment_actor.nextval, 'Lana', 'Parrilla', to_date('15.7.1977', 'dd.mm.yyyy'));
+INSERT INTO ACTOR VALUES(increment_actor.nextval, 'Josh', 'Dallas', to_date('18.12.1978', 'dd.mm.yyyy'));
+INSERT INTO ACTOR VALUES(increment_actor.nextval, 'Dominic', 'Purcell', to_date('17.2.1970', 'dd.mm.yyyy'));
+INSERT INTO ACTOR VALUES(increment_actor.nextval, 'Robles', 'Sarah-Nicole', to_date('20.12.1991', 'dd.mm.yyyy'));
+INSERT INTO ACTOR VALUES(increment_actor.nextval, 'Kenneth', 'Branagh', to_date('10.12.1960', 'dd.mm.yyyy'));
+INSERT INTO ACTOR VALUES(increment_actor.nextval, 'Taylor-Joy', 'Any', to_date('16.4.1996', 'dd.mm.yyyy'));
+INSERT INTO ACTOR VALUES(increment_actor.nextval, 'Emma', 'Stone', to_date('6.11.1988', 'dd.mm.yyyy'));
+
+select* from actor;
+
+
+CREATE TABLE ROL(
+    rol_id NUMBER(5) PRIMARY KEY,
+    nume_caracter VARCHAR2(50) NOT NULL,
+    importanta VARCHAR2(50) NOT NULL,
+    descriere VARCHAR2(200)
+);
+INSERT INTO ROL(rol_id, nume_caracter, importanta) VALUES(1, 'Thomas Shelby', 'principal');
+INSERT INTO ROL(rol_id, nume_caracter, importanta) VALUES(2, 'Seeley Booth', 'principal');
+INSERT INTO ROL(rol_id, nume_caracter, importanta) VALUES(3, 'Evil Queen', 'principal');
+INSERT INTO ROL(rol_id, nume_caracter, importanta) VALUES(4, 'Prince Charming', 'principal');
+INSERT INTO ROL(rol_id, nume_caracter, importanta) VALUES(5, 'Lincoln Burrows', 'principal');
+INSERT INTO ROL(rol_id, nume_caracter, importanta) VALUES(6, 'Luz Noceda', 'principal');
+INSERT INTO ROL(rol_id, nume_caracter, importanta) VALUES(7, 'Hercule Poirot', 'principal');
+INSERT INTO ROL(rol_id, nume_caracter, importanta) VALUES(8, 'Margot', 'principal');
+INSERT INTO ROL(rol_id, nume_caracter, importanta) VALUES(9, 'Bella Baxter', 'principal');
+
+select * from rol;
+
+
+CREATE TABLE PRODUCTIE(
+    productie_id NUMBER(6) PRIMARY KEY,
+    denumire VARCHAR2(50) NOT NULL,
+    gen VARCHAR2(50) NOT NULL,
+    data_aparitie DATE NOT NULL,
+    director_id NUMBER(5) NOT NULL,
+    FOREIGN KEY (director_id) REFERENCES DIRECTOR(director_id)
+);
+INSERT INTO PRODUCTIE VALUES(increment_productie.nextval, 'Peaky Blinders', 'drama', to_date('12.12.2013', 'dd.mm.yyyy'), 202);
+INSERT INTO PRODUCTIE VALUES(increment_productie.nextval, 'Death On The Nile', 'politist', to_date('11.2.2022', 'dd.mm.yyyy'), 606);
+INSERT INTO PRODUCTIE VALUES(increment_productie.nextval, 'Bones', 'drama', to_date('13.12.2005', 'dd.mm.yyyy'), 101);
+INSERT INTO PRODUCTIE VALUES(increment_productie.nextval, 'The Menu', 'comedie', to_date('18.11.2022', 'dd.mm.yyyy'), 707);
+INSERT INTO PRODUCTIE VALUES(increment_productie.nextval, 'Prison Break', 'drama', to_date('29.8.2005', 'dd.mm.yyyy'), 404);
+INSERT INTO PRODUCTIE VALUES(increment_productie.nextval, 'Owl House', 'aventura', to_date('10.1.2020', 'dd.mm.yyyy'), 505);
+INSERT INTO PRODUCTIE VALUES(increment_productie.nextval, 'A Haunting In Venice', 'politist', to_date('15.9.2023', 'dd.mm.yyyy'), 606);
+INSERT INTO PRODUCTIE VALUES(increment_productie.nextval, 'Once Upon A Time', 'drama', to_date('23.10.2011', 'dd.mm.yyyy'), 303);
+INSERT INTO PRODUCTIE VALUES(increment_productie.nextval, 'Poor Things', 'comedie', to_date('8.12.2023', 'dd.mm.yyyy'), 808);
+INSERT INTO PRODUCTIE VALUES(increment_productie.nextval, 'Murder on the Orient Express', 'politist', to_date('3.11.2017', 'dd.mm.yyyy'), 606);
+
+select* from productie;
+
+
+CREATE TABLE FILM(
+    productie_id NUMBER(6) PRIMARY KEY,
+    durata NUMBER(3) NOT NULL,
+    FOREIGN KEY(productie_id) REFERENCES PRODUCTIE(productie_id)
+);
+INSERT INTO FILM VALUES(7, 103);
+INSERT INTO FILM VALUES(2, 127);
+INSERT INTO FILM VALUES(4, 106);
+INSERT INTO FILM VALUES(9, 141);
+INSERT INTO FILM VALUES(21, 114);
+select * from film;
+
+CREATE TABLE SERIAL(
+    productie_id NUMBER(6) PRIMARY KEY,
+    numar_sezoane NUMBER(2) NOT NULL,
+    FOREIGN KEY(productie_id) REFERENCES PRODUCTIE(productie_id)
+);
+INSERT INTO SERIAL VALUES(1, 6);
+INSERT INTO SERIAL VALUES(3, 12);
+INSERT INTO SERIAL VALUES(8, 7);
+INSERT INTO SERIAL VALUES(5, 5);
+INSERT INTO SERIAL VALUES(6, 3);
+select * from serial;
+
+
+CREATE TABLE EPISOD(
+    episod_id NUMBER(6) PRIMARY KEY,
+    productie_id NUMBER(6) NOT NULL,
+    numar_episod NUMBER(2) NOT NULL,
+    numar_sezon NUMBER(2) NOT NULL,
+    titlu VARCHAR2(50) NOT NULL,
+    durata NUMBER(3) NOT NULL,
+    FOREIGN KEY(productie_id) REFERENCES PRODUCTIE(productie_id)
+);
+INSERT INTO EPISOD VALUES(1, 1, 1, 1, 'Episod 1', 58);
+INSERT INTO EPISOD VALUES(2, 1, 2, 1, 'Episod 2', 58);
+INSERT INTO EPISOD VALUES(3, 3, 5, 7, 'The Twist int the Twister', 42);
+INSERT INTO EPISOD VALUES(4, 3, 6, 7, 'The Crack In The Code', 45);
+INSERT INTO EPISOD VALUES(5, 3, 11, 12, 'The Day in the Life', 46);
+INSERT INTO EPISOD VALUES(6, 8, 1, 1, 'Pilot', 42);
+INSERT INTO EPISOD VALUES(7, 8, 2, 1, 'The Thing You Love Most', 41);
+INSERT INTO EPISOD VALUES(8, 8, 3, 1, 'Snow Falls', 42);
+INSERT INTO EPISOD VALUES(9, 8, 4, 1, 'The Price Of Gold', 45);
+INSERT INTO EPISOD VALUES(10, 5, 1, 1, 'Pilot', 42);
+INSERT INTO EPISOD VALUES(11, 5, 2, 1, 'Allen', 44);
+INSERT INTO EPISOD VALUES(12, 5, 3, 1, 'Cell Test', 43);
+select * from episod;
+
+
+CREATE TABLE PROFIL_PRODUCTIE(
+    profil_productie_id NUMBER(6) PRIMARY KEY,
+    profil_id NUMBER(6) NOT NULL,
+    productie_id NUMBER(6) NOT NULL,
+    FOREIGN KEY(profil_id) REFERENCES PROFIL(profil_id),
+    FOREIGN KEY(productie_id) REFERENCES PRODUCTIE(productie_id)
+);
+
+INSERT INTO PROFIL_PRODUCTIE VALUES(111, 11, 1);
+INSERT INTO PROFIL_PRODUCTIE VALUES(112, 11, 2);
+INSERT INTO PROFIL_PRODUCTIE VALUES(113, 11, 7);
+INSERT INTO PROFIL_PRODUCTIE VALUES(114, 22, 7);
+INSERT INTO PROFIL_PRODUCTIE VALUES(115, 33, 7);
+INSERT INTO PROFIL_PRODUCTIE VALUES(116, 44, 9);
+INSERT INTO PROFIL_PRODUCTIE VALUES(117, 44, 3);
+INSERT INTO PROFIL_PRODUCTIE VALUES(118, 55, 9);
+INSERT INTO PROFIL_PRODUCTIE VALUES(119, 66, 6);
+INSERT INTO PROFIL_PRODUCTIE VALUES(120, 11, 6);
+INSERT INTO PROFIL_PRODUCTIE VALUES(121, 55, 7);
+INSERT INTO PROFIL_PRODUCTIE VALUES(122, 11, 4);
+INSERT INTO PROFIL_PRODUCTIE VALUES(123, 11, 9);
+INSERT INTO PROFIL_PRODUCTIE VALUES(124, 22, 9);
+INSERT INTO PROFIL_PRODUCTIE VALUES(125, 22, 2);
+INSERT INTO PROFIL_PRODUCTIE VALUES(126, 66, 7);
+INSERT INTO PROFIL_PRODUCTIE VALUES(127, 66, 2);
+INSERT INTO PROFIL_PRODUCTIE VALUES(128, 66, 4);
+
+select * from profil_productie;
+
+
+CREATE TABLE PRODUCTIE_DIRECTOR(
+    productie_director_id NUMBER(6) PRIMARY KEY,
+    productie_id NUMBER(6) NOT NULL,
+    director_id NUMBER(5) NOT NULL,
+    FOREIGN KEY(productie_id) REFERENCES PRODUCTIE(productie_id),
+    FOREIGN KEY(director_id) REFERENCES DIRECTOR(director_id)
+);
+INSERT INTO PRODUCTIE_DIRECTOR VALUES(1, 1, 202);
+INSERT INTO PRODUCTIE_DIRECTOR VALUES(2, 2, 606);
+INSERT INTO PRODUCTIE_DIRECTOR VALUES(3, 3, 101);
+INSERT INTO PRODUCTIE_DIRECTOR VALUES(4, 4, 707);
+INSERT INTO PRODUCTIE_DIRECTOR VALUES(5, 5, 404);
+INSERT INTO PRODUCTIE_DIRECTOR VALUES(6, 6, 505);
+INSERT INTO PRODUCTIE_DIRECTOR VALUES(7, 7, 606);
+INSERT INTO PRODUCTIE_DIRECTOR VALUES(8, 8, 303);
+INSERT INTO PRODUCTIE_DIRECTOR VALUES(9, 9, 808);
+INSERT INTO PRODUCTIE_DIRECTOR VALUES(10, 8, 909);
+INSERT INTO PRODUCTIE_DIRECTOR VALUES(11, 21, 606);
+
+select * from productie_director;
+
+
+CREATE TABLE ROL_PRODUCTIE_JUCAT(
+    rol_productie_jucat NUMBER(7) PRIMARY KEY,
+    actor_id NUMBER(5) NOT NULL,
+    rol_id NUMBER(5) NOT NULL,
+    productie_id NUMBER(6) NOT NULL,
+    timp_ecran NUMBER(3),
+    FOREIGN KEY(actor_id) REFERENCES ACTOR(actor_id),
+    FOREIGN KEY(rol_id) REFERENCES ROL(rol_id),
+    FOREIGN KEY(productie_id) REFERENCES PRODUCTIE(productie_id)
+);
+INSERT INTO ROL_PRODUCTIE_JUCAT VALUES(1, 1, 1, 1, 5);
+INSERT INTO ROL_PRODUCTIE_JUCAT VALUES(2, 2, 2, 3, 5);
+INSERT INTO ROL_PRODUCTIE_JUCAT VALUES(3, 3, 3, 8, 5);
+INSERT INTO ROL_PRODUCTIE_JUCAT VALUES(4, 4, 4, 8, 5);
+INSERT INTO ROL_PRODUCTIE_JUCAT VALUES(5, 5, 5, 5, 5);
+INSERT INTO ROL_PRODUCTIE_JUCAT VALUES(6, 6, 6, 6, 359);
+INSERT INTO ROL_PRODUCTIE_JUCAT VALUES(7, 7, 7, 7, 87);
+INSERT INTO ROL_PRODUCTIE_JUCAT VALUES(8, 7, 7, 2, 5);
+INSERT INTO ROL_PRODUCTIE_JUCAT VALUES(9, 8, 8, 4, 74);
+INSERT INTO ROL_PRODUCTIE_JUCAT VALUES(10, 9, 9, 9, 112);
+INSERT INTO ROL_PRODUCTIE_JUCAT(rol_productie_jucat, actor_id, rol_id, productie_id) VALUES(11, 7, 7, 21);
+
+select * from ROL_PRODUCTIE_JUCAT;
+
+
+---------------------------------6
+--create or replace function
+--colectii=tablouri indexate, tablouri impricate, vectori
+--create or replace function
+CREATE OR REPLACE PROCEDURE PROCESARE_DATE(
+    P_ABONAMENT_ID IN NUMBER,
+    P_PRODUCTIE_ID IN NUMBER,
+    P_SERIAL_ID IN NUMBER
+)
+IS
+    -- 1. VECTOR pentru stocarea numarului total de productii vizionate per profil
+    TYPE VECTOR_VIZIONARI IS VARRAY(20) OF NUMBER;
+    V_VIZIONARI VECTOR_VIZIONARI := VECTOR_VIZIONARI(); -- Initializare VARRAY
+    
+    AUXILIAR NUMBER := 0;
+
+    -- 2. TABLOU INDEXAT pentru stocarea actorilor si a rolurilor lor
+    TYPE TABLOU_ROLURI IS TABLE OF VARCHAR2(200) INDEX BY PLS_INTEGER;
+    V_ACTORI TABLOU_ROLURI;
+    V_ROLURI TABLOU_ROLURI;
+
+    -- 3. TABLOU IMBRICAT pentru stocarea episoadelor si a directorilor
+    TYPE EPISOD_DIRECTOR IS RECORD (
+        EPISOD VARCHAR2(100),
+        DIRECTOR VARCHAR2(100)
+    );
+    TYPE TABEL_IMBRICAT IS TABLE OF EPISOD_DIRECTOR;
+    V_TABEL_IMBRICAT TABEL_IMBRICAT := TABEL_IMBRICAT(); -- Ini?ializare TABEL ÎMBRICAT
+
+BEGIN
+    -- 1. Determinarea num?rului maxim de produc?ii vizionate de un profil al abonamentului
+    FOR R IN (
+        SELECT P.PROFIL_ID, P.PORECLA, COUNT(PP.PRODUCTIE_ID) AS NUMAR_PRODUCTII
+        FROM PROFIL P
+        LEFT JOIN PROFIL_PRODUCTIE PP
+            ON P.PROFIL_ID = PP.PROFIL_ID
+        JOIN ABONAMENT A
+            ON A.ABONAMENT_ID = P.ABONAMENT_ID
+        WHERE A.ABONAMENT_ID = P_ABONAMENT_ID
+        GROUP BY P.PROFIL_ID, P.PORECLA
+    ) LOOP
+        V_VIZIONARI.EXTEND; -- Extindere VARRAY
+        V_VIZIONARI(V_VIZIONARI.COUNT) := R.NUMAR_PRODUCTII; -- Ad?ugare valoare
+    END LOOP;
+
+    -- Calcularea valorii maxime
+    FOR I IN 1 .. V_VIZIONARI.COUNT LOOP
+        IF V_VIZIONARI(I) > AUXILIAR THEN
+            AUXILIAR := V_VIZIONARI(I);
+        END IF;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('Num?rul maxim de produc?ii vizionate de un profil al abonamentului ' || P_ABONAMENT_ID || ' este ' || AUXILIAR || '.');
+
+    -- 2. Afi?area rolurilor jucate de actori pentru o produc?ie dat?
+    FOR T IN (
+        SELECT A.NUME AS ACTOR, R.NUME_CARACTER AS ROL
+        FROM ACTOR A
+        JOIN ROL_PRODUCTIE_JUCAT RPJ
+            ON A.ACTOR_ID = RPJ.ACTOR_ID
+        JOIN ROL R
+            ON RPJ.ROL_ID = R.ROL_ID
+        WHERE RPJ.PRODUCTIE_ID = P_PRODUCTIE_ID
+    ) LOOP
+        V_ACTORI(V_ACTORI.COUNT + 1) := T.ACTOR; -- Ad?ugare actor
+        V_ROLURI(V_ROLURI.COUNT + 1) := T.ROL; -- Ad?ugare rol
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Roluri jucate pentru produc?ia ' || P_PRODUCTIE_ID || ':');
+    FOR I IN 1 .. V_ACTORI.COUNT LOOP
+        DBMS_OUTPUT.PUT_LINE('Actor: ' || V_ACTORI(I) || ', Rol: ' || V_ROLURI(I));
+    END LOOP;
+
+    -- 3. G?sirea episoadelor ?i a directorilor unui serial
+    FOR S IN (
+        SELECT E.TITLU AS EPISOD, D.NUME AS DIRECTOR
+        FROM EPISOD E
+        JOIN PRODUCTIE_DIRECTOR PD
+            ON E.PRODUCTIE_ID = PD.PRODUCTIE_ID
+        JOIN DIRECTOR D
+            ON PD.DIRECTOR_ID = D.DIRECTOR_ID
+        WHERE E.PRODUCTIE_ID = P_SERIAL_ID
+    ) LOOP
+        V_TABEL_IMBRICAT.EXTEND; -- Extindere tabel îmbricat
+        V_TABEL_IMBRICAT(V_TABEL_IMBRICAT.LAST) := EPISOD_DIRECTOR(S.EPISOD, S.DIRECTOR); -- Ad?ugare în tabel
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Episoade ?i directori pentru serialul ' || P_SERIAL_ID || ':');
+    FOR I IN 1 .. V_TABEL_IMBRICAT.COUNT LOOP
+        DBMS_OUTPUT.PUT_LINE('Episod: ' || V_TABEL_IMBRICAT(I).EPISOD || ', Director: ' || V_TABEL_IMBRICAT(I).DIRECTOR);
+    END LOOP;
+
+END;
+/
+
+-- Testare procedur?
+BEGIN
+    PROCESARE_DATE(
+        P_ABONAMENT_ID => 10, 
+        P_PRODUCTIE_ID  => 2,
+        P_SERIAL_ID     => 3  
+    );
+END;
+/
+
+--------------------------7
+CREATE OR REPLACE PROCEDURE analiza_vizionari(
+    p_abonament_id IN NUMBER -- ID-ul abonamentului pentru care facem analiza
+)
+IS
+    -- Ciclu cursor parametrizat pentru extragerea produc?iilor vizionate de utilizatorii abonamentului
+    CURSOR c_productions(p_abonament_id NUMBER) IS
+        SELECT DISTINCT p.productie_id, pr.denumire
+        FROM profil_productie p
+        JOIN profil prf ON p.profil_id = prf.profil_id
+        JOIN productie pr ON p.productie_id = pr.productie_id
+        WHERE prf.abonament_id = p_abonament_id;
+
+    
+    -- Variabile pentru gestionarea datelor din primul cursor
+    v_productie_id NUMBER;
+    v_titlu VARCHAR2(200);
+BEGIN
+    -- Parcurgem cursorul pentru produc?ii
+    OPEN c_productions(p_abonament_id);
+
+    LOOP
+        FETCH c_productions INTO v_productie_id, v_titlu;
+        EXIT WHEN c_productions%NOTFOUND;
+
+        -- Afi??m titlul produc?iei
+        DBMS_OUTPUT.PUT_LINE('Produc?ie vizionat?: ' || v_titlu);
+
+        -- Cilcu cursor cu cubcereri simplu pentru extragerea actorilor principali pentru o produc?ie
+        for i in(SELECT a.nume AS actor, r.nume_caracter AS rol
+                    FROM actor a
+                    JOIN rol_productie_jucat rpj ON a.actor_id = rpj.actor_id
+                    JOIN rol r ON rpj.rol_id = r.rol_id
+                    WHERE rpj.productie_id = v_productie_id)
+        loop
+            DBMS_OUTPUT.PUT_LINE('    Actor: ' || i.actor || ', Rol: ' || i.rol);
+        END LOOP;
+
+    END LOOP;
+
+    CLOSE c_productions;
+
+END;
+/
+BEGIN
+    analiza_vizionari(10); -- ID-ul abonamentului pentru care dorim s? analiz?m vizion?rile
+END;
+/
+
+--------------------8
+--Se dore?te identificarea num?rului total de produc?ii vizionate
+--de c?tre un utilizator care face parte dintr-un anumit
+--abonament, împreun? cu detalii despre cea mai vizionat? 
+--produc?ie a utilizatorului (titlul produc?iei ?i num?rul de 
+--vizion?ri)
+CREATE OR REPLACE FUNCTION analiza_utilizator(
+    p_porecla IN VARCHAR2 -- Porecla profilului pentru care dorim analiza
+) RETURN VARCHAR2
+IS
+    -- Variabile pentru stocarea rezultatului
+    v_profil_id NUMBER;
+    v_total_vizionari NUMBER := 0;
+    v_titlu_cel_mai_vizionat VARCHAR2(200);
+    v_nr_vizionari_max NUMBER := 0;
+    v_result VARCHAR2(500);
+BEGIN
+    -- G?sim ID-ul profilului asociat cu porecla. Aici se va declan?a TOO_MANY_ROWS dac? exist? mai multe profiluri.
+    SELECT 
+        profil_id
+    INTO 
+        v_profil_id
+    FROM 
+        profil
+    WHERE 
+        porecla = p_porecla;
+
+    -- Calcul?m num?rul total de produc?ii vizionate
+    SELECT 
+        COUNT(pp.productie_id) AS total_vizionari
+    INTO 
+        v_total_vizionari
+    FROM 
+        profil_productie pp
+    WHERE 
+        pp.profil_id = v_profil_id;
+
+    -- Calcul?m titlul celei mai vizionate produc?ii ?i num?rul de vizion?ri, utilizând ROW_NUMBER
+    SELECT 
+        titlu, nr_vizionari
+    INTO 
+        v_titlu_cel_mai_vizionat, v_nr_vizionari_max
+    FROM (
+        SELECT 
+            pr.denumire AS titlu,
+            COUNT(pp.productie_id) AS nr_vizionari,
+            ROW_NUMBER() OVER (ORDER BY COUNT(pp.productie_id) DESC, pr.denumire) AS rn
+        FROM 
+            profil_productie pp
+            JOIN productie pr ON pp.productie_id = pr.productie_id
+        WHERE 
+            pp.profil_id = v_profil_id
+        GROUP BY pr.denumire
+    )
+    WHERE rn = 1;  -- Select?m doar produc?ia cu cel mai mare num?r de vizion?ri
+
+    -- Construim rezultatul final
+    v_result := 'Utilizatorul cu porecla ' || p_porecla ||  
+                ' a vizionat în total ' || v_total_vizionari || ' produc?ii. ' ||CHR(10)||
+                'Cea mai vizionat? produc?ie este "' || v_titlu_cel_mai_vizionat || 
+                '" cu ' || v_nr_vizionari_max || ' vizion?ri.';
+
+    RETURN v_result;
+
+-- Tratarea excep?iilor
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN 'Nu exist? date pentru utilizatorul cu porecla "' || p_porecla || '".';
+    WHEN TOO_MANY_ROWS THEN
+        RETURN 'Eroare: exist? mai mul?i utilizatori cu porecla "' || p_porecla || 
+               '". Verifica?i unicitatea datelor în baza de date.';
+    WHEN OTHERS THEN
+        RETURN 'Eroare nea?teptat?: ' || SQLERRM;
+END analiza_utilizator;
+/
+
+
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(analiza_utilizator());
+END;
+/
+
+
+
+
+---------------------------------------9
+--      Dac? utilizatorul nu exist?, s? se arunce No user found
+--      aceasi porecla--too many rows
+--      Dac? nu exist? produc?ii vizionate de utilizator pentru genul specificat, s? se
+--arunce o excep?ie personalizat? NoProductionsForGenreException.
+
+
+CREATE OR REPLACE PROCEDURE get_productions_by_user_and_genre(
+    p_porecla IN Varchar2,
+    production_genre IN VARCHAR2
+)
+IS
+    -- Exceptii proprii
+    NoProductionsForGenreException EXCEPTION;
+    NoSuchGenreInDatabaseException EXCEPTION;
+    
+    -- Variabile intermediare
+    user_exists NUMBER;
+    production_count NUMBER;
+    genre_exists number;
+
+BEGIN
+    -- Verific dacă utilizatorul există
+    SELECT COUNT(*)
+    INTO user_exists
+    FROM profil
+    WHERE porecla = p_porecla;
+
+    IF user_exists = 0 THEN
+        RAISE no_data_found;
+    ELSIF user_exists > 1 THEN
+        RAISE too_many_rows;
+    END IF;
+
+    -- Check if the genre exists in the database (Productie table)
+    SELECT COUNT(*)
+    INTO genre_exists
+    FROM PRODUCTIE
+    WHERE LOWER(gen) = LOWER(production_genre);
+
+    IF genre_exists = 0 THEN
+        RAISE NoSuchGenreInDatabaseException;
+    END IF;
+    
+    -- Verific dacă există productii vizionate de utilizator pentru genul specificat
+    SELECT COUNT(*)
+    INTO production_count
+    FROM UTILIZATOR u
+    JOIN PROFIL p ON u.abonament_id = p.abonament_id
+    JOIN PROFIL_PRODUCTIE pp ON p.profil_id = pp.profil_id
+    JOIN PRODUCTIE prod ON pp.productie_id = prod.productie_id
+    WHERE p.porecla = p_porecla AND LOWER(prod.gen) = LOWER(production_genre);
+
+    IF production_count = 0 THEN
+        RAISE NoProductionsForGenreException;
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Utilizatorul cu porecla: '||p_porecla);
+    -- Afiseaza lista productiilor vizionate
+    FOR rec IN (
+        SELECT prod.denumire, prod.gen, prod.data_aparitie, 
+               CASE 
+                   WHEN f.productie_id IS NOT NULL THEN 'Film'
+                   WHEN s.productie_id IS NOT NULL THEN 'Serial'
+               END AS productie_tip
+        FROM UTILIZATOR u
+        JOIN PROFIL p ON u.abonament_id = p.abonament_id
+        JOIN PROFIL_PRODUCTIE pp ON p.profil_id = pp.profil_id
+        JOIN PRODUCTIE prod ON pp.productie_id = prod.productie_id
+        LEFT JOIN FILM f ON prod.productie_id = f.productie_id
+        LEFT JOIN SERIAL s ON prod.productie_id = s.productie_id
+        WHERE p.porecla = p_porecla AND LOWER(prod.gen) = LOWER(production_genre)
+    ) LOOP
+        DBMS_OUTPUT.PUT_LINE('Titlu: ' || rec.denumire || ', Gen: ' || rec.gen ||
+                             ', Data Aparitie: ' || TO_CHAR(rec.data_aparitie, 'dd.mm.yyyy') ||
+                             ', Tip Productie: ' || rec.productie_tip);
+    END LOOP;
+
+EXCEPTION
+    WHEN no_data_found THEN
+        DBMS_OUTPUT.PUT_LINE('Eroare: Utilizatorul cu porecla ' || p_porecla || ' nu exista.');
+    WHEN too_many_rows THEN
+        DBMS_OUTPUT.PUT_LINE('Eroare: Exista mai multi utilizatori cu porecla: ' || p_porecla || ' .');
+    WHEN NoProductionsForGenreException THEN
+        DBMS_OUTPUT.PUT_LINE('Eroare: Nu exista productii vizionate de utilizator pentru genul specificat.');
+    WHEN NoSuchGenreInDatabaseException THEN
+        DBMS_OUTPUT.PUT_LINE('Eroare: Nu exista productii în baza de date pentru genul: ' || production_genre);
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('A aparut o eroare necunoscuta: ' || SQLERRM);
+END;
+/
+select * from utilizator;
+select * from profil;
+select * from profil_productie;
+
+--merge bine
+BEGIN
+    get_productions_by_user_and_genre('Spark', 'politist');
+END;
+
+--nu exista porecla
+BEGIN
+    get_productions_by_user_and_genre('nu', 'drama');
+END;
+
+--mai multi utilizatori
+BEGIN
+    get_productions_by_user_and_genre('Scout', 'drama');
+END;
+
+--genul exista dar porecla nu a vizionat nimic
+BEGIN
+    get_productions_by_user_and_genre('Test', 'politist');
+END;
+/
+--nu exista genul
+BEGIN
+    get_productions_by_user_and_genre('Luna', 'romance');
+END;
+/
+
+select * from profil_productie;
+select * from profil;
+
+
+----------------------------------10
+--putem lucra pe tabel doar in timpul saptamanii
+--update doar de luni pana sambata doar in lunile impare
+
+CREATE OR REPLACE TRIGGER trig_abonament
+    BEFORE INSERT OR UPDATE OR DELETE ON abonament
+BEGIN
+    IF (TO_CHAR(SYSDATE,'D') IN ('1', '7'))
+        OR (MOD(TO_NUMBER(TO_CHAR(SYSDATE, 'MM')), 2)=1)
+    THEN
+    RAISE_APPLICATION_ERROR(-20001,'tabelul nu poate fi actualizat');
+    END IF;
+END;
+/
+
+insert into abonament values(999, 'lunar', to_date('12.12.2024', 'dd.mm.yyyy'));
+
+select * from abonament;
+------------------------------------11
+--pot da update doar la abonamentele unde plata e expirata. Daca tipul de plata 
+--este lunar adaug 30 de zile la data la data curenta
+--daca este anual adaug 365 la data curenta
+select * from abonament;
+
+CREATE OR REPLACE TRIGGER TRG_UPDATE_ABONAMENT
+BEFORE UPDATE ON ABONAMENT
+FOR EACH ROW
+BEGIN
+    -- Verific daca plata a expirat
+    IF :OLD.data_expirare_plata < SYSDATE THEN
+        -- Adaug zile sau un an în functie de tipul de plata
+        IF :OLD.tip_plata = 'lunar' THEN
+            :NEW.data_expirare_plata := SYSDATE + 30;
+        ELSIF :OLD.tip_plata = 'anual' THEN
+            :NEW.data_expirare_plata := ADD_MONTHS(SYSDATE, 12);
+        END IF;
+    ELSE
+        RAISE_APPLICATION_ERROR(-20001, 'Nu se poate actualiza un abonament care nu a expirat.');
+    END IF;
+END;
+/
+
+insert into abonament values(100, 'anual', to_date('12.12.2024', 'dd.mm.yyyy'));
+select * from abonament;
+
+UPDATE ABONAMENT
+SET data_expirare_plata = data_expirare_plata
+where abonament_id=10;
+
+
+-----------------------------------12
+--creez tabela log_disney care tine informatii despre comenzile folosite
+CREATE TABLE log_disney
+(
+utilizator VARCHAR2(50),
+nume_baza_date VARCHAR2(50),
+eveniment VARCHAR2(50),
+obiect VARCHAR2(50),
+tip_obj VARCHAR2(50),
+data_even DATE
+);
+
+
+CREATE OR REPLACE TRIGGER log_disney_trig
+    AFTER CREATE OR DROP OR ALTER ON SCHEMA
+BEGIN
+    INSERT INTO log_disney VALUES(SYS.LOGIN_USER, 
+                        SYS.DATABASE_NAME, 
+                        SYS.SYSEVENT, 
+                        SYS.DICTIONARY_OBJ_NAME, 
+                        SYS.DICTIONARY_OBJ_TYPE, 
+                        SYSDATE);
+END;
+/
+
+create table exemple (
+nr number);
+
+alter table exemple add (nr2 number);
+
+drop table exemple;
+
+select * from log_disney;
+
+
+
+-----------------------------------------------------------------------
+---------------------------------------13
+
+
+CREATE OR REPLACE PACKAGE movie_package AS
+    -- Define the record type
+    TYPE just_movies IS RECORD (
+        film_id        film.productie_id%TYPE,
+        denumire       productie.denumire%TYPE,
+        gen            productie.gen%TYPE,
+        data_aparitie  productie.data_aparitie%TYPE,
+        director_id    productie.director_id%TYPE,
+        durata         film.durata%TYPE
+    );
+
+    type just_series is record(
+        serial_id      serial.productie_id%type,
+        denumire       productie.denumire%TYPE,
+        gen            productie.gen%TYPE,
+        data_aparitie  productie.data_aparitie%TYPE,
+        director_id    productie.director_id%TYPE,
+        numar_sezoane  serial.numar_sezoane%type
+    );
+    -- procedura sa afisez ce seriale a vazut un anumit profil
+    procedure what_series(p_profil_id number);
+    
+    --procedura care sa afiseze actorul cu cele mai multe roluri jucate
+    procedure which_actor;
+    
+    --functie care calculeaza numarul de minute de fime vizionate de un profil
+    function how_many_minutes(p_profil_id number) return number;
+    
+    --functie care determina anul cu cele mai multe seriale aparute
+    function most_series_year return number;
+END movie_package;
+/
+
+CREATE OR REPLACE PACKAGE BODY movie_package AS
+    PROCEDURE what_series(p_profil_id number) IS
+    -- Local variable of type table to hold movie details
+    series_detail just_series;
+
+    -- Cursor to fetch movie details
+    CURSOR series_cursor IS
+      SELECT s.productie_id AS serial_id,
+             p.denumire,
+             p.gen,
+             p.data_aparitie,
+             p.director_id,
+             s.numar_sezoane
+        FROM profil_productie pp
+        join serial s on pp.productie_id=s.productie_id
+        JOIN productie p ON s.productie_id = p.productie_id
+        where pp.profil_id=p_profil_id;
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Seriale vazute de profilul cu id-ul:'||p_profil_id);
+    DBMS_OUTPUT.PUT_LINE('----------------------------------------------');
+
+    -- Open the cursor and fetch rows
+    FOR series_detail IN series_cursor LOOP
+      DBMS_OUTPUT.PUT_LINE('Serial ID: ' || series_detail.serial_id);
+      DBMS_OUTPUT.PUT_LINE('Denumire: ' || series_detail.denumire);
+      DBMS_OUTPUT.PUT_LINE('Gen: ' || series_detail.gen);
+      DBMS_OUTPUT.PUT_LINE('Data Aparitie: ' || TO_CHAR(series_detail.data_aparitie, 'DD.MM.YYYY'));
+      DBMS_OUTPUT.PUT_LINE('Director ID: ' || series_detail.director_id);
+      DBMS_OUTPUT.PUT_LINE('Numar_sezoane: ' || series_detail.numar_sezoane );
+      DBMS_OUTPUT.PUT_LINE('----------------------------------------------');
+    END LOOP;
+  END what_series;
+  
+    function how_many_minutes
+        (p_profil_id number)
+    return number is
+            number_of_minutes number:=0;
+        begin
+            select sum(f.durata) 
+            into number_of_minutes
+            from profil_productie pp
+            join film f on pp.productie_id=f.productie_id
+            where pp.profil_id=p_profil_id;
+            
+            return number_of_minutes;
+    end how_many_minutes;
+        
+    function most_series_year return number is
+        max_year number;
+        max_count number:=0;
+    begin
+        for rec in(
+            select extract(year from p.data_aparitie) as year,
+                count(s.productie_id) as series_count
+            from serial s
+            join productie p on s.productie_id=p.productie_id
+        group by extract(year from p.data_aparitie)
+        order by series_count desc
+        fetch first row only
+        )loop
+            max_year := rec.year;
+            max_count := rec.series_count;
+        end loop;
+        
+        return max_year;
+    end most_series_year;
+    
+    procedure which_actor is
+        actor_detail actor.nume%type;
+        role_count number;
+    begin
+        for rec in(
+            select a.nume as actor_name,
+                count(rj.productie_id) as role_count
+            from rol_productie_jucat rj
+            join actor a on rj.actor_id=a.actor_id
+        group by a.nume
+        order by role_count desc
+        fetch first row only
+        ) loop
+            actor_detail := rec.actor_name;
+            role_count := rec.role_count;
+        end loop;
+        
+        DBMS_OUTPUT.PUT_LINE('Actor with the most roles: ' || actor_detail);
+        DBMS_OUTPUT.PUT_LINE('Number of roles: ' || role_count);
+    end which_actor;
+END movie_package;
+/
+
+begin
+    movie_package.what_series(11);
+end;
+/
+
+DECLARE
+    total_minutes NUMBER;
+BEGIN
+    -- Call the function and store the result in a variable
+    total_minutes := movie_package.how_many_minutes(11);
+
+    -- Output the result
+    DBMS_OUTPUT.PUT_LINE('Total minutes watched by profile 11: ' || total_minutes);
+END;
+/
+
+DECLARE
+    year_with_most_series NUMBER;
+BEGIN
+    -- Call the function to find the year with the most series
+    year_with_most_series := movie_package.most_series_year;
+
+    -- Output the result
+    DBMS_OUTPUT.PUT_LINE('Year with most series: ' || year_with_most_series);
+END;
+/
+
+BEGIN
+    movie_package.which_actor;
+END;
+/
